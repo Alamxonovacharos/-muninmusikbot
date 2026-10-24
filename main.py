@@ -1,3 +1,5 @@
+
+
 import os
 import telebot
 from flask import Flask, request
@@ -22,7 +24,23 @@ def index():
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-  bot.reply_to(message, "Salom! Bot muvaffaqiyatli ishga tushdi!")
+  bot.reply_to(
+      message,
+      "Salom! Menga Instagram yoki boshqa saytlardan havola yuboring.",
+  )
+
+
+@bot.message_handler(func=lambda message: True)
+def handle_message(message):
+  text = message.text
+  if "instagram.com" in text:
+    bot.reply_to(
+        message,
+        "Havola qabul qilindi! Musiqani yuklab olish jarayoni boshlandi...",
+    )
+    # Bu yerga musiqa yuklab beruvchi kodni qo'shamiz
+  else:
+    bot.reply_to(message, "Iltimos, to'g'ri Instagram havolasini yuboring.")
 
 
 if __name__ == "__main__":
@@ -33,4 +51,3 @@ if __name__ == "__main__":
 
   port = int(os.environ.get("PORT", 10000))
   app.run(host="0.0.0.0", port=port)
-
